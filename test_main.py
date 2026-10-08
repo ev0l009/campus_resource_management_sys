@@ -11,4 +11,4 @@ resources: list[ResourceType] = [
 fellows = {"F001": "Ada", "F002": "John", "F003": "Grace"}
 borrow_records: list[LogType] = []
 
-inventory = Inventory()
+inventory = Inventory(resources,fellows,borrow_records)
