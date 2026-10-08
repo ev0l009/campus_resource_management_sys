@@ -36,7 +36,7 @@ except DuplicateIDError as err:
 #     print(inventory.list_resources())
 
 try:
-    resource = inventory.get_resource("R004")
+    resource = inventory.get_resource_by_id("R004")
 except InvalidResourceIDError as err:
     print(err)
 except ResourceNotFoundError as err:
@@ -45,7 +45,32 @@ except ResourceNotFoundError as err:
 #     print(resource)
 
 try:
+    resource = inventory.get_resource_by_name("LAPtop")
+except ResourceNotFoundError as err:
+    print(err)
+else:
+    print(resource)
+
+try:
     inventory.borrow_resource(
+        "F001",
+        "R001",
+        5
+    )
+except InvalidFellowIDError as err:
+    print(err)
+except InvalidResourceIDError as err:
+    print(err)
+except ResourceNotFoundError as err:
+    print(err)
+except InvalidQuantityError as err:
+    print(err)
+# else:
+#     print(inventory.list_resources())
+#     print(inventory.display_borrow_logs())
+
+try:
+    inventory.return_resource(
         "F001",
         "R001",
         2
@@ -58,6 +83,6 @@ except ResourceNotFoundError as err:
     print(err)
 except InvalidQuantityError as err:
     print(err)
-else:
-    print(inventory.list_resources())
-    print(inventory.display_borrow_logs())
+# else:
+#     print(inventory.list_resources())
+#     print(inventory.display_borrow_logs())

@@ -20,8 +20,6 @@ def validate_resource_id(id: str, ids_list: list[str]):
     if id not in ids_list:
         raise InvalidResourceIDError("Err: Invalid Resource ID")
 
-def validate_quantity(quantity: int, available: int):
+def validate_quantity(quantity: int):
     if quantity <= 0:
         raise InvalidQuantityError("Err: Borrow at least a unit of an item")
-    if quantity > available:
-        raise InvalidQuantityError("Err: Quantity exceeds available stocks.")
