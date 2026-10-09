@@ -18,3 +18,6 @@ class InvalidQuantityError(InventoryError):
 
 class ResourceNotFoundError(InventoryError):
     pass
+
+class DatabaseError(InventoryError):
+    pass

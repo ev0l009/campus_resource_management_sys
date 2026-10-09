@@ -1,6 +1,3 @@
-from inventory import ResourceType
-from inventory import LogType
-
 from inventory import Inventory
 
 from exceptions import DuplicateNameError
@@ -9,16 +6,7 @@ from exceptions import InvalidResourceIDError
 from exceptions import InvalidFellowIDError
 from exceptions import ResourceNotFoundError
 from exceptions import InvalidQuantityError
-
-resources: list[ResourceType] = [
-  {"id": "R001", "name": "Laptop", "category": "Electronics", "total": 10, "available": 10},
-  {"id": "R002", "name": "Keyboard", "category": "Accessories", "total": 5, "available": 5},
-  {"id": "R003", "name": "Headset", "category": "Accessories", "total": 3, "available": 3}
-]
-fellows = {"F001": "Ada", "F002": "John", "F003": "Grace"}
-borrow_records: list[LogType] = []
-
-inventory = Inventory(resources,fellows,borrow_records)
+from exceptions import DatabaseError
 
 menu_options = (
     "===========================\n"
@@ -34,8 +22,18 @@ menu_options = (
     "8. Exit\n"
     "Select an option: "
 )
+inventory = Inventory()
 
 def campus_inventory_sys():
+
+    try:
+        print("Attempting to load inventory...")
+        inventory.load_data()
+    except DatabaseError as err:
+        print(f"\nOperation failed: {err}")
+    else:
+        print("\nLoading operation successful.\n")
+
     opt = "0"
     while opt != "8":
 
@@ -160,16 +158,20 @@ def campus_inventory_sys():
             print(inventory.display_borrow_logs())
 
             opt = "0"
+        elif opt not in ["0","1","2","3","4","5","6","7","8"]:
+            print("Invalid option. Try again...")
 
-        elif opt == "8":
-            print("Exiting...")
-            break
+            opt = "0"
+
+    try:
+        print("Attmepting database write...")
+        inventory.save_data()
+    except DatabaseError as err:
+        print(err)
+        print("\nDatabase write unsuccessful.\nSession not saved...")
+    else:
+        print("\nDatabase write successful.\nSession saved.")
+    finally:
+        print("\nExiting...")
         
 campus_inventory_sys()
-
-try:
-    resource = inventory.get_resource_by_name("LAPtop")
-except ResourceNotFoundError as err:
-    print(err)
-else:
-    print(resource)
